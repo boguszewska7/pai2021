@@ -1,0 +1,11 @@
+<div style="width: 300px">
+  <ul class="list-group">
+    <li class="list-group-item">
+      <b>{{ctrl.person.firstName}} {{ctrl.person.lastName}}</b>
+    </li>
+    <li ng-repeat="transaction in ctrl.transactions" class="list-group-item">
+      <span class="badge">{{transaction.amount}}</span>
+      {{transaction.when | date : 'medium'}}
+    </li>
+  </ul>
+</div>
