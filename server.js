@@ -1,6 +1,8 @@
 const http = require("http");
 const url = require("url");
 const nodestatic = require("node-static");
+const uuid = require("uuid");
+const cookies = require("cookies");
 
 const lib = require("./lib");
 const person = require("./person");
@@ -14,6 +16,23 @@ let fileServer = new nodestatic.Server("./frontend");
 
 server.on("request", function (req, res) {
   let env = { req, res };
+  let appCookies = new cookies(req, res);
+  let session = appCookies.get("session");
+  let now = Date.now();
+  if (!session || !lib.sessions[session]) {
+    session = uuid.v4();
+    lib.sessions[session] = {
+      from: req.connection.remoteAddress,
+      created: now,
+      touched: now,
+    };
+  } else {
+    lib.sessions[session].from = req.connection.remoteAddress;
+    lib.sessions[session].touched = now;
+  }
+  appCookies.set("session", session, { httpOnly: false });
+  env.session = session;
+
   env.urlParsed = url.parse(req.url, true);
   if (!env.urlParsed.query) env.urlParsed.query = {};
   env.payload = "";
@@ -36,6 +55,7 @@ server.on("request", function (req, res) {
         return;
       }
       console.log(
+        session,
         req.method,
         env.urlParsed.pathname,
         JSON.stringify(env.urlParsed.query),
