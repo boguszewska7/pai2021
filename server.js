@@ -10,6 +10,8 @@ const db = require("./db");
 const example = require("./example");
 const deposit = require("./deposit");
 const transaction = require("./transaction");
+const contractor = require("./contractor");
+const contract = require("./contract");
 
 let server = http.createServer();
 let fileServer = new nodestatic.Server("./frontend");
@@ -68,6 +70,12 @@ server.on("request", function (req, res) {
         case "/deposit":
           deposit.handle(env);
           break;
+        case "/contractor":
+            contractor.handle(env);
+            break;
+        case "/contract":
+            contract.handle(env);
+            break;
         case "/transaction":
           transaction.handle(env);
           break;
@@ -81,5 +89,5 @@ db.init(function () {
   // for development only
   example.initializePersons();
   //
-  server.listen(7779);
+  server.listen(7777);
 });

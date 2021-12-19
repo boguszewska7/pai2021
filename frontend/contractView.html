@@ -1,0 +1,22 @@
+<div>
+    <button class="btn btn-primary" ng-click="ctrl.contract()">Umowa</button>
+</div>
+
+<div><br /><br /></div>
+  
+  <table class="table table-stripped table-hover table-bordered">
+    <tr>
+      <th>#</th>
+      <th>Imię i Nazwisko wykonawcy</th>
+      <th>Data rozpoczęcia</th>
+      <th>Data zakończenia</th>
+      <th>Edycja</th>
+    </tr>
+    <tr ng-repeat="contract in ctrl.contractsHistory">
+      <td>{{$index + 1}}</td>
+      <td ng-bind="contract.firstName contract.lastName"></td>
+      <td ng-bind="contract.dateB"></td>
+      <td ng-bind="contract.dateE"></td>
+      <td><button type="button" class="btn btn-primary" >Edytuj</td>
+    </tr>
+  </table>

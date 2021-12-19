@@ -22,6 +22,8 @@ const db = module.exports = {
             let conn = connection.db('pai2021')
             db.persons = conn.collection('persons')
             db.transactions = conn.collection('transactions')
+            db.contractors = conn.collection('contractors')
+            db.contracts= conn.collection('contracts')
             nextTick()
         })
     }

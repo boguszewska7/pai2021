@@ -22,11 +22,25 @@ app.constant("routes", [
     menu: "Osoby",
   },
   {
+    route: "/contractors",
+    templateUrl: "contractorsView.html",
+    controller: "ContractorsCtrl",
+    controllerAs: "ctrl",
+    menu: "Wykonawcy",
+  },
+  {
     route: "/transfers",
     templateUrl: "transfersView.html",
     controller: "TransfersCtrl",
     controllerAs: "ctrl",
     menu: "Transfery",
+  },
+  {
+    route: "/contracts",
+    templateUrl: "contractView.html",
+    controller: "ContractsCtrl",
+    controllerAs: "ctrl",
+    menu: "Umowy",
   },
   {
     route: "/transactionshistory/:personId",
