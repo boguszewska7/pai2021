@@ -14,5 +14,4 @@ app.controller('MakeContractCtrl', [ '$http', '$uibModalInstance', 'options', fu
         },
         function(err) {}
     )    
-
 }])
