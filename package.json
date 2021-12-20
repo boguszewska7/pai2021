@@ -18,6 +18,8 @@
   },
   "homepage": "https://gitlab.com/mariusz.jarocki/pai2021#readme",
   "dependencies": {
+    "angular-material": "^1.2.4",
+    "angularjs-datepicker": "^2.1.23",
     "cookies": "^0.8.0",
     "mongodb": "^4.1.4",
     "node-static": "^0.7.11",

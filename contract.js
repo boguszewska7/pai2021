@@ -61,7 +61,6 @@ const contract = module.exports = {
         if (_id) {
           db.contracts.findOne({ _id }, function (err, result) {
             lib.sendJson(env.res, result);
-            console.log( lib.sendJson(env.res, result))
           });} 
         else 
         {
@@ -80,25 +79,19 @@ const contract = module.exports = {
        case "PUT":
              _id = db.ObjectId(env.payload._id);
               if (_id) {
-              db.contracts.findOneAndUpdate(
-              { _id },
-              { $set: contractData },
-              { returnOriginal: false },
-                 function (err, result) {
-                    if (!err) 
-                { sendAllContracts();} 
-                    else {
-                          lib.sendError(env.res,400,"persons.findOneAndUpdate() failed");
-                        }
-                      }
-                    );
-                  } else {
-                    lib.sendError(
-                      env.res,
-                      400,
-                      "broken _id for update " + env.urlParsed.query._id
-                    );
-                  }
+                  db.contracts.findOneAndUpdate(
+                  { _id },
+                  { $set: contractData },
+                  { returnOriginal: false },
+                  function (err, result) {
+                    if (!err){ 
+                        sendAllContracts();
+                      } 
+                      else {
+                      lib.sendError(env.res,400,"persons.findOneAndUpdate() failed");
+                      }});
+                    } 
+            else {lib.sendError(env.res, 400,"broken _id for update " + env.urlParsed.query._id);}
                   break;  
             default:
                 lib.sendError(env.res, 405, 'method not implemented')

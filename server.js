@@ -89,6 +89,6 @@ db.init(function () {
   // for development only
   example.initializePersons();
   //
-  server.listen(7779
+  server.listen(7763
     );
 });

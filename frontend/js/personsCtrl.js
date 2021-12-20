@@ -12,7 +12,6 @@ app.controller("PersonsCtrl", [
     const personDefaults = {
       firstName: "",
       lastName: "",
-      year: 2000,
     };
 
     ctrl.edit = function (index) {

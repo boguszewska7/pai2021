@@ -47,19 +47,13 @@ app.controller('ContractsCtrl', [ '$http', 'common', function($http, common) {
         })
     };
 
-    ctrl.contractChange= {
-      contractor: null, 
-      dateB: null, 
-      dateE: null, 
-      salary:0
-   }
+ 
     ctrl.editContract = function(index){
       let options = {
       title: "Edytuj dane",
       ok: true,
       cancel: true,
-      data: ctrl.contractChange,
-      id: index
+      data: ctrl.contractsHistory[index],
     }
 
     common.dialog(
@@ -68,13 +62,15 @@ app.controller('ContractsCtrl', [ '$http', 'common', function($http, common) {
       options,
       function (answer) {
          if(answer =="ok"){
-           console.log(ctrl.contractChange)
-              $http.put("/contract", ctrl.contractChange).then(
+           console.log(options.data)
+              $http.put("/contract", options.data).then(
                 function (res) {
                   ctrl.contractsHistory = res.data;
                   common.alert.show("Dane zmienione");
+                  ctrl.refreshData();
                 },
                 function (err) {
+                  console.log("hujowo");
                 }
               );
             }

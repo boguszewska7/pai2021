@@ -3,26 +3,27 @@ app.controller('EditContractCtrl', [ '$http','$uibModalInstance', 'options', fun
     ctrl.options = options
     ctrl.contractors = []
     ctrl.options.data.contractor = null
+    ctrl.options.data.dateB  = 0;
+    ctrl.options.data.dateE  = 0;
 
 
-    $http.get('/contract?_id='+ ctrl.options.id).then(
-        function(res) {
-            ctrl.options.data = res.data;
-            console.log( ctrl.options.data);
-        },
-        function(err) {
-            lib.sendError(env.res, 400, "contract.get failed");
-        }
-    ) 
-    
-    $http.get('/contractor').then(
+     $http.get('/contractor').then(
         function(res) {
             ctrl.contractors = res.data
             ctrl.options.data.contractor = ctrl.contractors[0]._id
         },
         function(err) {}
     ) 
-
+    $http.get('/contract?_id='+ ctrl.options.data._id).then(
+        
+        function(res) {
+            ctrl.options.data = res.data
+        },
+        function(err) {
+        }
+    ) 
+    
+ 
 
     ctrl.submit = function(answer) { $uibModalInstance.close(answer) }
     ctrl.cancel = function() { $uibModalInstance.dismiss(null) }

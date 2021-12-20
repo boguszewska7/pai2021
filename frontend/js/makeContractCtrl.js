@@ -2,7 +2,6 @@ app.controller('MakeContractCtrl', [ '$http', '$uibModalInstance', 'options', fu
     let ctrl = this
     ctrl.options = options
     ctrl.contractors = []
-    ctrl.options.data.contractor = null
 
     ctrl.submit = function(answer) { $uibModalInstance.close(answer) }
     ctrl.cancel = function() { $uibModalInstance.dismiss(null) }
@@ -10,8 +9,9 @@ app.controller('MakeContractCtrl', [ '$http', '$uibModalInstance', 'options', fu
     $http.get('/contractor').then(
         function(res) {
             ctrl.contractors = res.data
-            ctrl.options.data.contractor = ctrl.contractors[0]._id
         },
-        function(err) {}
+        function(err) {
+            console.log("hujmakecontract")
+        }
     )    
 }])
