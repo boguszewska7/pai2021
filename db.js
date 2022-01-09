@@ -1,7 +1,6 @@
 const mongodb = require('mongodb')
 
 const db = module.exports = {
-
     persons: null,
     transactions: null,
 
@@ -21,9 +20,13 @@ const db = module.exports = {
             }
             let conn = connection.db('pai2021')
             db.persons = conn.collection('persons')
+            db.users = conn.collection('users')
             db.transactions = conn.collection('transactions')
             db.contractors = conn.collection('contractors')
             db.contracts= conn.collection('contracts')
+            db.menagers = conn.collection('menagers')
+            db.projects = conn.collection('projects')
+            db.projectsHistory = conn.collection('projectsHistory')
             nextTick()
         })
     }

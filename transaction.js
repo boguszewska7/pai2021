@@ -21,7 +21,7 @@ const person = (module.exports = {
         if (recipientId) {
           const transactions = db.transactions
             .find({ recipient: recipientId })
-            .toArray(function (err, transactions) {
+            .toArray(function (err, transactions){
               if (!err) {
                 lib.sendJson(env.res, transactions);
               } else {

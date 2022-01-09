@@ -9,10 +9,11 @@ const contract = module.exports = {
         const validate = function(contractData) {
             let result = { 
                 contractor: db.ObjectId(contractData.contractor),
+                project: db.ObjectId(contractData.project),
                 dateB: contractData.dateB, 
                 dateE: contractData.dateE,
                 salary: contractData.salary}
-            return result.contractor ? result : null
+            return result.contractor && result.dateB <= result.dateE && result.salary > 0 ? result : null
         }
        
         if (env.req.method == "POST" || env.req.method == "PUT") {
@@ -37,7 +38,83 @@ const contract = module.exports = {
                     $unwind: {
                         path: "$contractorData"
                     }
-                }]
+                },{
+                  $lookup: {
+                      from: "projects",
+                      localField: "project",
+                      foreignField: "_id",
+                      as: "projectData",
+                  }
+              }, {
+                  $unwind: {
+                      path: "$projectData"
+                  }
+              },{
+                $project: {
+                    projectData: {
+                        "when": 0,
+                        "_id": 0
+                }
+            }},
+              ])
+            .toArray(function (err, contracts) {
+              if (!err) {
+                lib.sendJson(env.res, contracts);
+              } else {
+                lib.sendError(env.res, 400, "contracts failed " + err);
+              }
+            });
+          };
+
+        const sendManagerContracts = function(idMenager){
+            db.contracts
+            .aggregate(
+                [{
+                    $lookup: {
+                        from: "contractors",
+                        localField: "contractor",
+                        foreignField: "_id",
+                        as: "contractorData",
+                    }
+                }, {
+                    $unwind: {
+                        path: "$contractorData"
+                    }
+                },{
+                  $lookup: {
+                      from: "projects",
+                      localField: "project",
+                      foreignField: "_id",
+                      as: "projectData",
+                  }
+              }, {
+                  $unwind: {
+                      path: "$projectData"
+                  }
+              },{
+                $project: {
+                   /* projectData: {
+                        "when": 0,
+                        "_id": 0
+                    },*/
+                    contractorData: {
+                        "_id":0 
+                    }
+                }
+            },{
+                $project: {
+                    projectData: {
+                        "when": 0,
+                        "_id": 0
+                    },
+                    
+                }
+            },{
+                $match: {
+                    "projectData.menager" : idMenager
+                }
+            }
+              ]
             )
             .toArray(function (err, contracts) {
               if (!err) {
@@ -47,48 +124,53 @@ const contract = module.exports = {
               }
             });
           };
-        
-      
-        contractData.when = Date.now()
-
-        
-
-        //contractData.contractorName = GetContractor();
-        
+             
         switch(env.req.method) {
         case "GET":
-        _id = db.ObjectId(env.urlParsed.query._id);
-        if (_id) {
-          db.contracts.findOne({ _id }, function (err, result) {
-            lib.sendJson(env.res, result);
-          });} 
-        else 
-        {
-          sendAllContracts(); 
-        }
+            let rolaaa = lib.sessions[env.session].roles;
+            let iddd = lib.sessions[env.session].id;
+            _id = db.ObjectId(env.urlParsed.query._id);
+                  if (_id) {
+                    db.contracts.findOne({ _id }, function (err, result) {
+                    lib.sendJson(env.res, result);
+                  });} 
+            if(rolaaa == "user"){
+                 sendManagerContracts(iddd);
+            }
+            else if(rolaaa == "admin") {
+                 sendAllContracts();
+            }
+          
         break;
             case 'POST':
                 db.contracts.insertOne(contractData, function(err, result) {
                     if(!err) {
                         lib.sendJson(env.res, contractData)
                     } else {
-                        lib.sendError(env.res, 400, 'transactions.insertOne() failed')
+                        lib.sendError(env.res, 400, 'CONTRACT.insertOne() failed')
                     }
                 })
                 break;
        case "PUT":
-             _id = db.ObjectId(env.payload._id);
+            let rolaa = lib.sessions[env.session].roles;
+            let idd = lib.sessions[env.session].id;
+            _id = db.ObjectId(env.urlParsed.query._id)
               if (_id) {
                   db.contracts.findOneAndUpdate(
                   { _id },
                   { $set: contractData },
                   { returnOriginal: false },
                   function (err, result) {
-                    if (!err){ 
-                        sendAllContracts();
+                      if (!err){ 
+                        if(rolaa == "user"){
+                            sendManagerContracts(idd);
+                       }
+                       else if(rolaa == "admin") {
+                            sendAllContracts();
+                        }
                       } 
                       else {
-                      lib.sendError(env.res,400,"persons.findOneAndUpdate() failed");
+                      lib.sendError(env.res,400,"contract.findOneAndUpdate() failed");
                       }});
                     } 
             else {lib.sendError(env.res, 400,"broken _id for update " + env.urlParsed.query._id);}

@@ -12,6 +12,10 @@ const deposit = require("./deposit");
 const transaction = require("./transaction");
 const contractor = require("./contractor");
 const contract = require("./contract");
+const project = require("./project");
+const menager = require("./menager");
+const auth = require("./auth");
+const projectsHistory = require("./projectsHistory");
 
 let server = http.createServer();
 let fileServer = new nodestatic.Server("./frontend");
@@ -37,6 +41,13 @@ server.on("request", function (req, res) {
 
   env.urlParsed = url.parse(req.url, true);
   if (!env.urlParsed.query) env.urlParsed.query = {};
+
+  if(!lib.checkPermissions(req.method + ' ' + env.urlParsed.pathname, lib.sessions[session].roles)) {
+    lib.sendError(res, 403, 'permission denied')
+    return
+  }
+
+
   env.payload = "";
   req
     .on("data", function (data) {
@@ -64,6 +75,10 @@ server.on("request", function (req, res) {
         JSON.stringify(env.payload)
       );
       switch (env.urlParsed.pathname) {
+
+        case '/auth':
+                auth.handle(env)
+                break;
         case "/person":
           person.handle(env);
           break;
@@ -79,6 +94,15 @@ server.on("request", function (req, res) {
         case "/transaction":
           transaction.handle(env);
           break;
+        case "/menager":
+            menager.handle(env);
+            break;
+        case "/project":
+              project.handle(env);
+              break;
+         case "/projectsHistory":
+              projectsHistory.handle(env);
+              break;
         default:
           fileServer.serve(req, res);
       }
@@ -89,6 +113,5 @@ db.init(function () {
   // for development only
   example.initializePersons();
   //
-  server.listen(7763
-    );
+  server.listen(7001);
 });

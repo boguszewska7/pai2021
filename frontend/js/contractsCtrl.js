@@ -54,6 +54,7 @@ app.controller('ContractsCtrl', [ '$http', 'common', function($http, common) {
       ok: true,
       cancel: true,
       data: ctrl.contractsHistory[index],
+      idContract : ctrl.contractsHistory[index]._id,
     }
 
     common.dialog(
@@ -62,15 +63,16 @@ app.controller('ContractsCtrl', [ '$http', 'common', function($http, common) {
       options,
       function (answer) {
          if(answer =="ok"){
-           console.log(options.data)
-              $http.put("/contract", options.data).then(
+          delete options.data.contractorData
+          delete options.dataprojectData
+              $http.put("/contract?_id="+ options.idContract, options.data).then(
                 function (res) {
                   ctrl.contractsHistory = res.data;
                   common.alert.show("Dane zmienione");
                   ctrl.refreshData();
                 },
                 function (err) {
-                  console.log("hujowo");
+                  console.log("Blad z zmienianiem danych" +options.data);
                 }
               );
             }

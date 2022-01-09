@@ -2,6 +2,8 @@ app.controller('MakeContractCtrl', [ '$http', '$uibModalInstance', 'options', fu
     let ctrl = this
     ctrl.options = options
     ctrl.contractors = []
+    ctrl.projects = [] 
+
 
     ctrl.submit = function(answer) { $uibModalInstance.close(answer) }
     ctrl.cancel = function() { $uibModalInstance.dismiss(null) }
@@ -11,7 +13,29 @@ app.controller('MakeContractCtrl', [ '$http', '$uibModalInstance', 'options', fu
             ctrl.contractors = res.data
         },
         function(err) {
-            console.log("hujmakecontract")
+            console.log("problem get contractor")
         }
-    )    
-}])
+    )  
+    
+    $http
+        .get("/project")
+          .then(
+            function (res) {
+              ctrl.projects = res.data;
+              console.log(ctrl.projects)
+            },
+            function (err) {}
+          );
+}]);
+
+app.filter('dateFormat1', function($filter){
+ return function(input)
+ {
+  if(input == null){ return ""; } 
+ 
+  var _date = $filter('date')(new Date(input), 'dd-MM-yyyy');
+ 
+  return _date.toUpperCase();
+
+ };
+});

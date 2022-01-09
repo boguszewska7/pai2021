@@ -23,6 +23,18 @@ const example = module.exports = {
         "lastName": "Wielki",
         "year": -320
     }],
+
+    users: [{
+        "_id": db.ObjectId("61af980faabcf8eda55e491c"),
+        "login": "admin",
+        "password": "admin1",
+        "roles": [ "admin" ]
+      },{
+        "_id": db.ObjectId("61af9854aabcf8eda55e491e"),
+        "login": "user",
+        "password": "user1",
+        "roles": [ "user" ]
+    }],
  
     initializePersons: function() {
         db.persons.count(function(err, n) {
@@ -34,5 +46,31 @@ const example = module.exports = {
                 })
             }
         })
+    },
+
+    initializeMenagers: function() {
+        db.menagers.count(function(err, n) {
+            if(n == 0) {
+                console.log('No persons, example data will be used')
+                example.menagers.forEach(function(menager) {
+                    db.menagers.insertOne(menager, function(err, result) {})    
+                    console.log('db.persons.insertOne(' + JSON.stringify(menager) + ')')
+                })
+            }
+        })
+
+        db.users.count(function(err, n) {
+            if(n == 0) {
+                console.log('No users, example data will be used')
+                example.users.forEach(function(user) {
+                    db.users.insertOne(user, function(err, result) {})    
+                    console.log('db.users.insertOne(' + JSON.stringify(user) + ')')
+                })
+            }
+        })
+
+
     }
+
+    
 }

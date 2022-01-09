@@ -12,15 +12,18 @@
       <th>Data rozpoczęcia umowy</th>
       <th>Data zakończenia umowy</th>
       <th>Wynagrodzenie</th>
+      <th>Projekt</th>
       <th>Edycja</th>
     </tr>
     <tr ng-repeat="contract in ctrl.contractsHistory">
       <td>{{$index + 1}}</td>
       <td ng-bind="contract.contractorData.firstName"></td>
       <td ng-bind="contract.contractorData.lastName"></td>
-      <td ng-bind="contract.dateB | date:'dd/MM/yyyy'"></td>
-      <td ng-bind="contract.dateE | date:'dd/MM/yyyy'"></td>
-      <td ng-bind="contract.salary"></td>
+      <td ng-bind="contract.dateB | dateFormat1"></td>
+      <td ng-bind="contract.dateE | dateFormat1"></td>      
+      <td ng-bind="contract.salary">zł</td>
+      <td ng-bind="contract.projectData.name"></td>
+
       <td><button type="button" class="btn btn-primary" ng-click="ctrl.editContract($index)">Edytuj</td>
     </tr>
   </table>

@@ -2,28 +2,24 @@ app.controller('EditContractCtrl', [ '$http','$uibModalInstance', 'options', fun
     let ctrl = this
     ctrl.options = options
     ctrl.contractors = []
-    ctrl.options.data.contractor = null
-    ctrl.options.data.dateB  = 0;
-    ctrl.options.data.dateE  = 0;
 
-
-     $http.get('/contractor').then(
+   
+    $http.get('/contractor').then(
         function(res) {
             ctrl.contractors = res.data
-            ctrl.options.data.contractor = ctrl.contractors[0]._id
         },
         function(err) {}
     ) 
-    $http.get('/contract?_id='+ ctrl.options.data._id).then(
-        
+   /* $http.get('/contract?_id='+ ctrl.options.idContract).then(
         function(res) {
             ctrl.options.data = res.data
         },
         function(err) {
+            console.log("problem get contract")
+            $uibModalInstance.close()
+            lib.sendError(env.res, 400, 'CONTRACT.insertOne() failed')
         }
-    ) 
-    
- 
+    ) */
 
     ctrl.submit = function(answer) { $uibModalInstance.close(answer) }
     ctrl.cancel = function() { $uibModalInstance.dismiss(null) }

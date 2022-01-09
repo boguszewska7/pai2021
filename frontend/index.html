@@ -21,6 +21,7 @@
     <div class="container" ng-controller="ContainerCtrl as ctrl">
       <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container-fluid">
+
           <div class="navbar-header">
             <button
               type="button"
@@ -45,6 +46,11 @@
                 <a href="#{{menuPos.route}}" ng-bind-html="menuPos.title"></a>
               </li>
             </ul>
+            
+            <ul class="nav navbar-nav navbar-right">
+              <li><a ng-bind-html="ctrl.loginIcon()" ng-click="ctrl.login()"></a></li>
+             </ul>
+
           </div>
         </div>
       </nav>
@@ -71,6 +77,7 @@
 
     <script src="js/pai2021.js"></script>
     <script src="js/transactionsHistoryCtrl.js"></script>
+    <script src="js/loginCtrl.js"></script>
     <script src="js/homeCtrl.js"></script>
     <script src="js/personsCtrl.js"></script>
     <script src="js/contractorCtrl.js"></script>
@@ -80,6 +87,12 @@
     <script src="js/makeTransfer.js"></script>
     <script src="js/contractsCtrl.js"></script>
     <script src="js/makeContractCtrl.js"></script>
+    <script src="js/makeProjectCtrl.js"></script>
+    <script src="js/projectsCtrl.js"></script>
+    <script src="js/showContractsCtrl.js"></script>
+    <script src="js/completeProjectCtrl.js"></script>
+    <script src="js/projectsHistoryCtrl.js"></script>
+    
 
   </body>
 </html>

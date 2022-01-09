@@ -32,3 +32,14 @@ body {
 .alert-animated.ng-hide-add, .alert-animated.ng-hide-remove {
     display: block!important;
 }
+
+.sum{
+    width: 100%;
+    display: flex;
+}
+
+.sum .sum-detail{
+ color: rgb(31, 0, 167);
+ margin-left: 6px;
+}
+

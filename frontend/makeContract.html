@@ -10,6 +10,10 @@
             <select id="contractor" class="form-control" ng-model="ctrl.options.data.contractor">
                 <option ng-repeat="contractor in ctrl.contractors" value="{{contractor._id}}" ng-bind="contractor.firstName+' '+contractor.lastName"></option>
             </select>
+            <label for="project">Projekt</label>
+            <select id="project" class="form-control" ng-model="ctrl.options.data.project">
+                <option ng-repeat="project in ctrl.projects" value="{{project._id}}" ng-bind="project.name"></option>
+            </select>
             <label for="dateB">Data rozpoczęcia</label>
             <input id="dateB" type="date" class="form-control" ng-model="ctrl.options.data.dateB"/>
             <label for="dateE">Data zakończenia</label>
